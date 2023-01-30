@@ -3,4 +3,10 @@
 Add styles or override variables from the theme here.
 
 */
+.aa-Panel {
+  z-index: 10;
+}
 
+.aa-Autocomplete {
+  width: 30vw !important;
+}

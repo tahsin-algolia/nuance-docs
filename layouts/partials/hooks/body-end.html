@@ -1,0 +1,45 @@
+<!-- scripts for algolia search -->
+<script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+<script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.14.3/dist/algoliasearch-lite.umd.js" integrity="sha256-dyJcbGuYfdzNfifkHxYVd/rzeR6SLLcDFYEidcybldM=" crossorigin="anonymous"></script>
+
+<script>
+  const { autocomplete, getAlgoliaResults } = window['@algolia/autocomplete-js'];
+  const searchClient = algoliasearch(
+    'MI6WASY0JF',
+    'a2f0aa5b13f6fd046b465491c161dbd0'
+  );
+  autocomplete({
+    container: '#docsearch',
+    detachedMediaQuery: '',
+    defaultActiveItemId: 0,
+    placeholder: 'Search for documentation',
+    getSources({ query }) {
+      return [
+        {
+          sourceId: 'githubItems',
+          getItems() {
+            return getAlgoliaResults({
+              searchClient,
+              queries: [
+                {
+                  indexName: 'crawler_nuancegithub',
+                  query,
+                },
+              ],
+            });
+          },
+          getItemUrl({ item }) {
+            return item.url;
+          },
+          templates: {
+            item({ item, html }) {
+              return html`<a href="${item.url}">
+                <span>${item.name}</span>
+              </a>`;
+            },
+          },
+        }
+      ];
+    },
+  });
+</script>
